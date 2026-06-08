@@ -15,8 +15,8 @@ DR=df.pct_change()*100
 daily_returns=pd.DataFrame(DR)
 #Calculating votality for each sector
 #(how wildly prices move and down)
-volatility=daily_returns.std()
-volatility.sort_values(ascending=False,inplace=True)
+Volatility=daily_returns.std()
+Volatility.sort_values(ascending=False,inplace=True)
 #Calculating rolling average for the last 30, 60 and 90 days
 #(avg price of the last N days)
 rolling_30=daily_returns.rolling(30).mean()
