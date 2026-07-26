@@ -28,3 +28,10 @@ momentum=rolling_30-rolling_90
 #Calculating Relative Strength
 #(performance of a sector compared to the overall market)
 relative_strength=rolling_30.sub(rolling_30['^NSEI'],axis=0)
+sector_names={
+    "^NSEBANK":"Banking","^CNXIT":"IT","^CNXPHARMA":"Pharma","^CNXAUTO":"Auto",
+    "^CNXFMCG":"FMCG","^CNXREALTY":"Realty","^CNXENERGY":"Energy",
+    "^CNXMETAL":"Metal","^CNXMEDIA":"Media","^CNXINFRA":"Infra","^NSEI":"NIFTY50"
+}
+df.rename(columns=sector_names,inplace=True)
+print(df.columns)

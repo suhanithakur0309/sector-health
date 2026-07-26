@@ -35,13 +35,19 @@ y=pd.merge(x,r_60_m,on=['Date','Sector'],how='outer')
 z=pd.merge(y,r_90_m,on=['Date','Sector'],how='outer')
 a=pd.merge(z,m_m,on=['Date','Sector'],how='outer')
 b=pd.merge(a,rs_m,on=['Date','Sector'],how='outer')
-b['Volatility']=b['Sector'].map(Volatility)
-b['Date']=b['Date'].astype(str)
+b['Volatility'] = b['Sector'].map(Volatility)
+b['Sector'] = b['Sector'].map(sector_names)
+b['Date'] = b['Date'].astype(str)
 DF=list(b.itertuples(index=False))
 #Using executemany to insert data into table
 cursor.executemany('INSERT INTO SECTOR_METRICS VALUES(?,?,?,?,?,?,?,?,?)',DF)
 conn.commit()
 #Converting to csv file
 b.to_csv('sector_metrics.csv', index=False)
+import os
+os.getcwd()
+health_score_scaled = health_score_scaled.rename(columns=sector_names)
+health_score_scaled = health_score_scaled.drop(columns=['NIFTY50'], errors='ignore')
+health_score_scaled.to_csv('historical_scores.csv', index=False)
 import os
 os.getcwd()

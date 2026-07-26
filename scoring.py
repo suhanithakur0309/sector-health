@@ -10,8 +10,9 @@ norm_volatility=normalize(-Volatility)
 norm_momentum=normalize(momentum)
 norm_Relative_Strength=normalize(relative_strength)
 #Defining a combined weighted health score according to importance
-health_score=(0.25*norm_rolling_30)+(0.20*norm_rolling_90)+(0.20*Volatility)+(0.20*norm_momentum)+(0.15*norm_Relative_Strength)
-health_score=health_score.drop(columns=['^NSEI'])
+health_score=(0.25*norm_rolling_30)+(0.20*norm_rolling_90)+(0.20*norm_volatility)+(0.20*norm_momentum)+(0.15*norm_Relative_Strength)
+health_score=health_score.rename(columns=sector_names)
+health_score=health_score.drop(columns=['NIFTY50'])
 #Scaling the health for ease of comparision
 health_score_scaled=(health_score-health_score.min())/(health_score.max()-health_score.min())*100
 #Assigning rating according to the health score of each sector
@@ -29,3 +30,9 @@ scores=health_score_scaled.iloc[-1]
 df_scores=pd.DataFrame({'Scores' :scores, 'Rating' :scores.apply(get_rating)})
 df_scores.reset_index(inplace=True)
 df_scores.sort_values(by='Scores',axis=0,ascending=False,inplace=True)
+print(health_score_scaled.shape)
+print(health_score_scaled.dropna().shape)
+health_score_scaled.dropna().to_csv('historical_scores.csv', index=True)
+print(health_score_scaled.tail(5))
+import os
+os.getcwd()
